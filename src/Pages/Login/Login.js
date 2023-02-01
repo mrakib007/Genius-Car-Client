@@ -1,7 +1,9 @@
 import React, { useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { setAuthToken } from '../../api/auth';
 import img from '../../assets/images/login/login.svg';
 import { AuthContext } from '../../contexts/AuthProvider/AuthProvider';
+import SocialLogin from '../Shared/SocialLogin/SocialLogin';
 
 const Login = () => {
 
@@ -20,12 +22,14 @@ const Login = () => {
         login(email, password)
         .then( result => {
             const user = result.user;
+            // setAuthToken(user);
             const currentUser = {
                 email: user.email
             }
             console.log(currentUser);
 
-            //get jwt token
+            // get jwt token
+
             fetch('https://genius-car-server-five-amber.vercel.app/jwt',{
                 method: 'POST',
                 headers: {
@@ -40,7 +44,7 @@ const Login = () => {
                 //but it is the easiest way possible
                 localStorage.setItem('geniusToken',data.token);
                 navigate(from,{replace: true});
-            })
+            });
 
         })
         .catch(error => console.log(error));
@@ -75,6 +79,9 @@ const Login = () => {
                         </div>
                     </form>
                     <p className='text-center'>New to Genius Car <Link className='text-orange-600 font-bold' to="/signup">Sign Up</Link> </p>
+                    
+                    <SocialLogin></SocialLogin>
+
                 </div>
             </div>
         </div>
